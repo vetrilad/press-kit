@@ -1,7 +1,6 @@
 require 'nokogiri'
 require 'pry'
 require 'json'
-require 'ap'
 
 PAGES_DIR  = "data/pages/"
 PARSED_DIR = "data/parsed/"
