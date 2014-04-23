@@ -9,9 +9,11 @@ There are several steps:
 
 - Obtain the URLs
 - Save the articles in a folder
+- Parse the articles
+- Squash the results into one big JSON
 - Analyze the full data set
 - Create a visualization
 
-Running `make` will do everything
-
+Run `make run`, wait around 6 hours and you'll have everything.
+You'll also need around 7GB of disk space.
 
