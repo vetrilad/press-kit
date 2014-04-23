@@ -4,6 +4,8 @@ require 'nokogiri'
 PAGES_DIR      = "data/pages/"
 PER_SECOND     = 15
 
+FileUtils.mkdir_p "data/pages"
+
 
 def most_recent_id
   return @most_recent_id if @most_recent_id
@@ -17,7 +19,7 @@ def latest_stored_id
   Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
                       .map(&:to_i)
                       .sort
-                      .last
+                      .last || 0
 end
 
 def link(id)
