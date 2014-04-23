@@ -21,7 +21,7 @@ people = [
   Person.new(:diacov,  "D. Diacov",      ["Diacov"]),
   Person.new(:strelet,  "V. Streleţ",    ["Strelet"]),
   Person.new(:sirbu,  "S. Sârbu",        ["Sirbu", "Sarbu"]),
-  Person.new(:hadarca,  "I. Hadârcă",    ["Hadarca", "Hadarca"])
+  Person.new(:hadarca,  "I. Hadârcă",    ["Hadarca", "Hadirca"])
 ]
 
 data = JSON.parse(File.read(SQUASHED_DIR + "all.json"))
@@ -32,7 +32,7 @@ end
 
 result = {}
 
-(2009..2014).each do |year|
+(2008..2014).each do |year|
   year_filtered = data.select { |e| e["time"].year == year }
   result[year.to_s] = {}
 
@@ -41,17 +41,26 @@ result = {}
     puts "Working with #{month}.#{year}"
 
     full_text  = month_filtered.map { |e| e["content"] }.join(" ")
-    clear_text = I18n.transliterate(full_text)
     month_data = {}
-
+    month_total = month_filtered.count
     people.each do |person|
-      total_occurences = person.terms.inject(0) {|sum, term|
-        sum + full_text.scan(term).count
-      }
+      total_occurences = 0
+
+      month_filtered.each do |article|
+        if person.terms.any? { |term| article["content"].scan(term).count > 0 }
+          total_occurences += 1
+        end
+      end
+
+      occurences = if month_total.zero?
+        0.0
+      else
+        (total_occurences.to_f / month_total).round(2)
+      end
 
       month_data[person.key] = {
         name: person.name,
-        occurences: total_occurences
+        occurences: occurences
       }
     end
 
@@ -59,6 +68,6 @@ result = {}
   end
 end
 
-File.write("output.json", result.to_json)
+File.write("dataset.json", result.to_json)
 
 
