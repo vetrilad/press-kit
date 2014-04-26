@@ -16,7 +16,9 @@ $(function () {
     , "V. Streleţ": "images/strelet.png"
     , "S. Sârbu": "images/sarbu.png"
     , "I. Hadârcă": "images/hadarca.png"
-    },
-    data_source: '../dataset.json'
+    }
+  , data_source: '../dataset.json'
+  , rounding_function: function(a) {return Math.round(parseFloat(a)*100)/100} // rounding by 2 decimals after point
+  , text_dates_size: '12px'
   })
 });
