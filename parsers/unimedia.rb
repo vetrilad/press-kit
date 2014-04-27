@@ -2,8 +2,9 @@ require 'nokogiri'
 require 'pry'
 require 'json'
 
-PAGES_DIR  = "data/pages/"
-PARSED_DIR = "data/parsed/"
+PAGES_DIR       = "data/pages/unimedia/"
+PARSED_DIR      = "data/parsed/unimedia/"
+FileUtils.mkdir_p "data/parsed/unimedia"
 
 def latest_stored_id
   @last_stored_id ||= Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }

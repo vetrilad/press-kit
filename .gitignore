@@ -1,3 +1,5 @@
 data/pages/*
 data/parsed/*
 data/squashed/*
+db/articles.sqlite
+
