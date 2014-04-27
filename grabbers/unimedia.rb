@@ -11,7 +11,6 @@ def most_recent_id
   url = "http://unimedia.info/rss/news.xml"
 
   doc = Nokogiri::XML(RestClient.get(url))
-  binding.pry
   @most_recent_id = doc.css("link")[3].text.scan(/-([\d]+)\.html.+/).first.first.to_i
 end
 
