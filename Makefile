@@ -2,7 +2,7 @@ fetch:
 	ruby grabbers/unimedia.rb
 
 parse: fetch
-	ruby page_parser.rb
+	ruby parsers/unimedia.rb
 
 squash: parse
 	ruby squasher.rb

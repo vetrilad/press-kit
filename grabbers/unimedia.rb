@@ -2,7 +2,7 @@ require 'rest_client'
 require 'nokogiri'
 require 'pry'
 
-PAGES_DIR       = "../data/pages/unimedia"
+PAGES_DIR       = "../data/pages/unimedia/"
 FileUtils.mkdir_p "../data/pages/unimedia"
 
 
