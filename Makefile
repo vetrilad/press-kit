@@ -1,5 +1,5 @@
 fetch:
-	ruby page_grabber.rb
+	ruby grabbers/unimedia.rb
 
 parse: fetch
 	ruby page_parser.rb
