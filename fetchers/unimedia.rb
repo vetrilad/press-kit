@@ -1,5 +1,6 @@
 require 'rest_client'
 require 'nokogiri'
+require 'progress_bar'
 require 'pry'
 
 
@@ -32,34 +33,25 @@ class Fetcher
     File.write(PAGES_DIR + id.to_s, page)
   end
 
-  def time_left_string(id)
-    time = (most_recent_id - id) / 3 #magical number
-    minutes, seconds = time.divmod(60)
-    hours, minutes   = minutes.divmod(60)
-    "#{hours}h #{minutes}m #{seconds}s"
-  end
-
   def fetch_single(id)
     page = RestClient.get(link(id))
-    bytes = save(page, id)
-    puts "#{id} saved. #{bytes/1024} KB"
+    save(page, id)
+  end
+
+  def progressbar
+    @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
   end
 
   def run
     setup
-
-    p "Latest stored id is #{latest_stored_id}"
-    p "Most recent id is #{most_recent_id}"
+    puts "Fetching Unimedia. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
 
     latest_stored_id.upto(most_recent_id) do |id|
       fetch_single(id)
-      puts (id / most_recent_id.to_f * 100).round(2).to_s + "% done"
-      puts time_left_string(id)
-      puts
+      progressbar.increment!
     end
   end
 end
-
 
 Fetcher.new.run
 
