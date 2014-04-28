@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'progress_bar'
 require 'pry'
 
-class Fetcher
+class TimpulFetcher
   PAGES_DIR  = "./data/pages/timpul/"
   TITTER_URL = "https://twitter.com/Timpul"
 
@@ -59,7 +59,7 @@ class Fetcher
 end
 
 begin
-  Fetcher.new.run
+  TimpulFetcher.new.run
 rescue => e
   binding.pry
 end

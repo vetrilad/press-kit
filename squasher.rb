@@ -36,12 +36,12 @@ def has_mention?(text)
   false
 end
 
-def build_url(id)
-  "http://unimedia.info/stiri/-#{id}.html"
+def build_url(article)
+  "http://unimedia.info/stiri/-#{article["id"]}.html"
 end
 
-most_recent = Dir[PARSED_DIR + "*"].max_by { |f| File.mtime(f) }
-parsed_time = File.mtime(most_recent)
+most_recent   = Dir[PARSED_DIR + "*"].max_by { |f| File.mtime(f) }
+parsed_time   = File.mtime(most_recent)
 squashed_time = File.mtime(SQUASHED_DIR + "all.json")
 
 if squashed_time < parsed_time
@@ -55,7 +55,7 @@ Dir[PARSED_DIR + "*"].each do |filename|
   article = JSON.parse(File.read(filename))
   id = filename.gsub(PARSED_DIR, "")
   article["id"]  = id
-  article["url"] = build_url(id)
+  article["url"] = build_url(article)
   next unless article["content"]
 
   article["content"] = I18n.transliterate(article["content"])

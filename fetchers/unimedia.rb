@@ -3,8 +3,7 @@ require 'nokogiri'
 require 'progress_bar'
 require 'pry'
 
-
-class Fetcher
+class UnimediaFetcher
   PAGES_DIR = "./data/pages/unimedia/"
   FEED_URL  = "http://unimedia.info/rss/news.xml"
 
@@ -53,5 +52,4 @@ class Fetcher
   end
 end
 
-Fetcher.new.run
-
+UnimediaFetcher.new.run
