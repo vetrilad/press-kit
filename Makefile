@@ -1,14 +1,14 @@
 fetch:
-	ruby fetchers/unimedia.rb
+	ruby scripts/fetch.rb
 
 parse: fetch
-	ruby parsers/unimedia.rb
+	ruby scripts/parse.rb
 
 squash: parse
-	ruby squasher.rb
+	ruby scripts/squash.rb
 
 analyze: squash
-	ruby analyzer.rb
+	ruby scripts/analyze.rb
 
 run: analyze
 	python -m SimpleHTTPServer &; sleep 1; open http://localhost:8000/visualization
