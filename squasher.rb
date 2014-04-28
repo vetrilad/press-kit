@@ -1,7 +1,7 @@
 require 'json'
 require 'i18n'
 
-PARSED_DIR   = "data/parsed/"
+PARSED_DIR   = "data/parsed/unimedia/"
 SQUASHED_DIR = "data/squashed/"
 
 Person = Struct.new(:key, :name, :terms)
