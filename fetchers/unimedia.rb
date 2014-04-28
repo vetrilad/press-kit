@@ -1,7 +1,4 @@
-require 'rest_client'
-require 'nokogiri'
-require 'progress_bar'
-require 'pry'
+require_relative "../main"
 
 class UnimediaFetcher
   PAGES_DIR = "./data/pages/unimedia/"
@@ -51,5 +48,3 @@ class UnimediaFetcher
     end
   end
 end
-
-UnimediaFetcher.new.run

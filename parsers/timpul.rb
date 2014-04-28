@@ -1,6 +1,4 @@
-require 'nokogiri'
-require 'pry'
-require 'json'
+require_relative "../main"
 
 class TimpulParser
   PAGES_DIR       = "data/pages/timpul/"
@@ -92,6 +90,3 @@ class TimpulParser
     end
   end
 end
-
-TimpulParser.new.run
-

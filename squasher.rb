@@ -1,10 +1,8 @@
-require 'json'
-require 'i18n'
+require_relative "main"
 
 PARSED_DIR   = "data/parsed/unimedia/"
 SQUASHED_DIR = "data/squashed/"
 
-Person = Struct.new(:key, :name, :terms)
 @people = [
   Person.new(:filat,   "V. Filat",       ["Filat"]),
   Person.new(:voronin, "V. Voronin",     ["Voronin"]),
@@ -42,6 +40,7 @@ end
 
 most_recent   = Dir[PARSED_DIR + "*"].max_by { |f| File.mtime(f) }
 parsed_time   = File.mtime(most_recent)
+
 squashed_time = File.mtime(SQUASHED_DIR + "all.json")
 
 if squashed_time < parsed_time

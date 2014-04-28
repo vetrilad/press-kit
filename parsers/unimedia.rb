@@ -1,6 +1,4 @@
-require 'nokogiri'
-require 'pry'
-require 'json'
+require_relative "../main"
 
 class UnimediaParser
   PAGES_DIR       = "data/pages/unimedia/"
@@ -74,5 +72,3 @@ class UnimediaParser
     end
   end
 end
-
-UnimediaParser.new.run

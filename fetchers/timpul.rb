@@ -1,7 +1,4 @@
-require 'rest_client'
-require 'nokogiri'
-require 'progress_bar'
-require 'pry'
+require_relative "../main"
 
 class TimpulFetcher
   PAGES_DIR  = "./data/pages/timpul/"
@@ -56,10 +53,4 @@ class TimpulFetcher
       progressbar.increment!
     end
   end
-end
-
-begin
-  TimpulFetcher.new.run
-rescue => e
-  binding.pry
 end

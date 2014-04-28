@@ -1,10 +1,8 @@
 fetch:
-	ruby fetchers/unimedia.rb
-	ruby fetchers/timpul.rb
+	ruby fetchers/fetch.rb
 
 parse: fetch
-	ruby parsers/unimedia.rb
-	ruby parsers/timpul.rb
+	ruby parsers/parse.rb
 
 squash: parse
 	ruby squasher.rb

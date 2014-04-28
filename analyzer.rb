@@ -1,10 +1,8 @@
-require 'json'
-require 'pry'
+require_relative "main"
+
 require "i18n"
 
 SQUASHED_DIR = "data/squashed/"
-
-Person = Struct.new(:key, :name, :terms)
 
 people = [
   Person.new(:filat,   "V. Filat",       ["Filat"]),
