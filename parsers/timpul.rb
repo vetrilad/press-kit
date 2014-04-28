@@ -41,8 +41,8 @@ def parse_timestring(timestring)
   return DateTime.strptime(timestring, "%d %b %Y, ora %k:%M").iso8601
 end
 
-def sanitize_node!(node)
-  node.css("script").each do |div|
+def sanitize_node!(doc)
+  doc.css('.changeFont').css("script").each do |div|
     new_node = doc.create_element "p"
     div.replace new_node
   end
@@ -51,13 +51,13 @@ end
 def parse(text)
   doc = Nokogiri::HTML(text)
   return {} if doc.title == "Timpul - Ştiri din Moldova"
-  title = doc.title.split(" | ").first rescue doc.title
+  title = doc.title.split(" | ").first.strip rescue doc.title
 
   timestring = doc.css('.box.artGallery').css('.data_author').text.split("\n").map(&:strip)[2]
 
-  sanitize_node!(doc.css('.changeFont'))
+  sanitize_node!(doc)
 
-  content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'')
+  content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'').strip
 
   result = {
     title: title,
