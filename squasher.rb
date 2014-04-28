@@ -1,7 +1,7 @@
 require_relative "main"
 
 class Squasher
-  PARSED_DIR   = "data/parsed/unimedia/"
+  PARSED_DIRS  = Dir.glob('data/parsed/*').select {|f| File.directory? f}
   SQUASHED_DIR = "data/squashed/"
 
   attr_accessor :data
@@ -21,11 +21,17 @@ class Squasher
   end
 
   def build_url(article)
-    "http://unimedia.info/stiri/-#{article["id"]}.html"
+    if article["source"] == "unimedia"
+      "http://unimedia.info/stiri/-#{article["id"]}.html"
+    else
+      "http://www.timpul.md/u_#{article["id"]}/"
+    end
   end
 
   def most_recent
-    Dir[PARSED_DIR + "*"].max_by { |f| File.mtime(f) }
+    PARSED_DIRS.map do |dir|
+      Dir[dir + "/*"].max_by { |f| File.mtime(f) }
+    end.max_by { |f| File.mtime(f) }
   end
 
   def parsed_time
@@ -45,20 +51,22 @@ class Squasher
   end
 
   def run
-    check_timestamps
+    check_timestamps!
 
-    Dir[PARSED_DIR + "*"].each do |filename|
-      puts "Loading #{filename}"
-      article = JSON.parse(File.read(filename))
-      id = filename.gsub(PARSED_DIR, "")
-      article["id"]  = id
-      article["url"] = build_url(article)
-      next unless article["content"]
+    PARSED_DIRS.each do |parsed_dir|
+      Dir[parsed_dir + "/*"].each do |filename|
+        puts "Loading #{filename}"
+        article = JSON.parse(File.read(filename))
+        id = filename.gsub("#{parsed_dir}/", "")
+        article["id"]  = id
+        article["url"] = build_url(article)
+        next unless article["content"]
 
-      article["content"] = I18n.transliterate(article["content"])
+        article["content"] = I18n.transliterate(article["content"])
 
-      if has_mention?(article["content"])
-        data << article
+        if has_mention?(article["content"])
+          data << article
+        end
       end
     end
 
