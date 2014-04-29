@@ -7,9 +7,9 @@ begin
   TimpulFetcher.new.run
 rescue RestClient::BadGateway => e
   sleep 2
-  puts "ne zaebisi posoni(("
-  puts "no zaebisi ne daleko!"
+  puts "RestClient::BadGateway caught"
+  puts "retrying"
   retry unless (tries -= 1).zero?
 else
-  puts "zaebisi posoni!!"
+  puts "Done"
 end
