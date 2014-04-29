@@ -1,5 +1,4 @@
-data/pages/*
-data/parsed/*
-data/squashed/*
+data/*
 db/articles.sqlite
 
+.DS_Store

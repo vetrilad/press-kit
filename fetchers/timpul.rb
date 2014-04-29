@@ -14,7 +14,7 @@ class TimpulFetcher
     @most_recent_id = doc.css(".tweet-text")
                          .text
                          .scan(/timpul.md\/u_[\d]+\//)
-                         .first
+                         .max_by { |f| f.scan(/\d+/) }
                          .scan(/\d+/)
                          .first
                          .to_i
@@ -38,6 +38,11 @@ class TimpulFetcher
   def fetch_single(id)
     page = RestClient.get(link(id))
     save(page, id)
+  rescue URI::InvalidURIError => error
+    puts error
+    puts link(id)
+    # URI::InvalidURIError: bad URI(is not URI?): http://ru.timpul.md/articol/35897-------–----.html
+    save(RestClient.get("http://www.timpul.md"), id)
   end
 
   def progressbar
@@ -47,6 +52,11 @@ class TimpulFetcher
   def run
     setup
     puts "Fetching Timpul. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+
+    if latest_stored_id == most_recent_id
+      puts "Nothing to fetch for Timpul"
+      return
+    end
 
     latest_stored_id.upto(most_recent_id) do |id|
       fetch_single(id)
