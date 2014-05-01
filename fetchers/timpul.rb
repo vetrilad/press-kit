@@ -41,8 +41,13 @@ class TimpulFetcher
   rescue URI::InvalidURIError => error
     puts error
     puts link(id)
-    # URI::InvalidURIError: bad URI(is not URI?): http://ru.timpul.md/articol/35897-------–----.html
+    # URI::InvalidURIError: bad URI(is not URI?):
+    # http://ru.timpul.md/articol/35897-------–----.html
     save(RestClient.get("http://www.timpul.md"), id)
+  rescue RestClient::BadGateway => error
+    sleep 2
+    puts "RestClient::BadGateway caught"
+    retry
   end
 
   def progressbar
