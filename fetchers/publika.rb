@@ -32,7 +32,7 @@ class PublikaFetcher
   end
 
   def valid?(page)
-    page.match("publicat in data de")
+    page.include?("publicat in data de")
   end
 
   def save(page, id)
@@ -42,6 +42,14 @@ class PublikaFetcher
   def fetch_single(id)
     page = RestClient.get(link(id))
     save(page, id)
+  rescue RestClient::Forbidden => error
+    puts error
+    puts link(id)
+    save(RestClient.get("http://www.publika.md"), id)
+  rescue RestClient::BadGateway => error
+    sleep 2
+    puts "RestClient::BadGateway caught"
+    retry
   end
 
   def progressbar

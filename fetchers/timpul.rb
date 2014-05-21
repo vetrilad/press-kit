@@ -44,6 +44,12 @@ class TimpulFetcher
     # URI::InvalidURIError: bad URI(is not URI?):
     # http://ru.timpul.md/articol/35897-------–----.html
     save(RestClient.get("http://www.timpul.md"), id)
+  rescue SocketError => error
+    puts error
+    puts link(id)
+    # getaddrinfo: nodename nor servname provided, or not known
+    # http://www.timpul.md/u_58670/ also u_58671, u_58672
+    save(RestClient.get("http://www.timpul.md"), id)
   rescue RestClient::BadGateway => error
     sleep 2
     puts "RestClient::BadGateway caught"
