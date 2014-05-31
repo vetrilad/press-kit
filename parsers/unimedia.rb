@@ -35,7 +35,10 @@ class UnimediaParser
 
   def parse(text)
     doc = Nokogiri::HTML(text)
-    return {} if doc.title == "Această pagină nu există"
+    if doc.title.match(/pagină nu există/) or doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
+      return {}
+    end
+
     title = doc.css('h1.bigtitlex2').first.text rescue doc.title
     timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
     content = doc.css('.news-text').text.gsub(/\r|\n/, ' ').squeeze(' ')

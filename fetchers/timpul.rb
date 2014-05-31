@@ -11,8 +11,7 @@ class TimpulFetcher
   def most_recent_id
     return @most_recent_id if @most_recent_id
     doc = Nokogiri::XML(RestClient.get(TITTER_URL))
-    @most_recent_id = doc.css(".tweet-text")
-                         .text
+    @most_recent_id = doc.text
                          .scan(/timpul.md\/u_[\d]+\//)
                          .max_by { |f| f.scan(/\d+/) }
                          .scan(/\d+/)
