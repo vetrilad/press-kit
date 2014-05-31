@@ -32,6 +32,12 @@ class UnimediaFetcher
   def fetch_single(id)
     page = RestClient.get(link(id))
     save(page, id)
+  rescue RestClient::ResourceNotFound => error
+    puts error
+    puts link(id)
+    # URI::InvalidURIError: bad URI(is not URI?):
+    # http://ru.timpul.md/articol/35897-------–----.html
+    save(RestClient.get("http://unimedia.info"), id)
   end
 
   def progressbar
