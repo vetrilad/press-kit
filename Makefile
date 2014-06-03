@@ -10,5 +10,7 @@ squash: parse
 analyze: squash
 	ruby scripts/analyze.rb
 
-run: analyze
-	python -m SimpleHTTPServer &; sleep 1; open http://localhost:8000/visualization
+run: squash
+	(python -m SimpleHTTPServer &)
+	sleep 1
+	(open http://localhost:8000/visualization)
