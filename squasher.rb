@@ -20,14 +20,6 @@ class Squasher
     false
   end
 
-  def build_url(article)
-    if article["source"] == "unimedia"
-      "http://unimedia.info/stiri/-#{article["id"]}.html"
-    else
-      "http://www.timpul.md/u_#{article["id"]}/"
-    end
-  end
-
   def most_recent
     PARSED_DIRS.map do |dir|
       Dir[dir + "/*"].max_by { |f| File.mtime(f) }
@@ -57,9 +49,6 @@ class Squasher
       Dir[parsed_dir + "/*"].each do |filename|
         puts "Loading #{filename}"
         article = JSON.parse(File.read(filename))
-        id = filename.gsub("#{parsed_dir}/", "")
-        article["id"]  = id
-        article["url"] = build_url(article)
         next unless article["content"]
 
         article["content"] = I18n.transliterate(article["content"])
