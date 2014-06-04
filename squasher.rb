@@ -7,6 +7,7 @@ class Squasher
   attr_accessor :data
 
   def initialize
+    FileUtils.mkdir_p SQUASHED_DIR
     @data = []
     File.write(SQUASHED_DIR + "all.json", "")
   end
