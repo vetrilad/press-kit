@@ -6,8 +6,7 @@ class Analyzer
   attr_accessor :data, :result
 
   def initialize
-    @data   = JSON.parse(File.read(SQUASHED_DIR + "all.json"))
-    @result = {}
+    @data, @result = JSON.parse(File.read(SQUASHED_DIR + "all.json")), {}
   end
 
   def run
@@ -24,8 +23,8 @@ class Analyzer
         month_filtered = year_filtered.select { |e| e["time"].month == month }
         puts "Working with #{month}.#{year}"
 
-        full_text  = month_filtered.map { |e| e["content"] }.join(" ")
-        month_data = {}
+        full_text   = month_filtered.map { |e| e["content"] }.join(" ")
+        month_data  = {}
         month_total = month_filtered.count
         People.each do |person|
           total_occurences = 0
@@ -51,7 +50,6 @@ class Analyzer
         result[year.to_s][month.to_s] = month_data
       end
     end
-
     File.write("dataset.json", result.to_json)
   end
 end

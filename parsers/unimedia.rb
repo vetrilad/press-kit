@@ -33,7 +33,11 @@ class UnimediaParser
     return DateTime.strptime(timestring, "ora: %k:%M, %d %b %Y").iso8601
   end
 
-  def parse(text)
+  def build_url(id)
+    "http://unimedia.info/stiri/-#{id}.html"
+  end
+
+  def parse(text, id)
     doc = Nokogiri::HTML(text)
     if doc.title.match(/pagină nu există/) or doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
       return {}
@@ -44,13 +48,15 @@ class UnimediaParser
     content = doc.css('.news-text').text.gsub(/\r|\n/, ' ').squeeze(' ')
 
     result = {
-      source: "unimedia",
-      title: title,
-      original_time: timestring,
-      datetime: parse_timestring(timestring),
-      views: views.to_i,
-      comments: comments.to_i,
-      content: content
+      source:         "unimedia",
+      title:          title,
+      original_time:  timestring,
+      datetime:       parse_timestring(timestring),
+      views:          views.to_i,
+      comments:       comments.to_i,
+      content:        content,
+      id:             id,
+      url:            build_url(id)
     }
   rescue => e
     binding.pry
@@ -69,7 +75,7 @@ class UnimediaParser
 
   def run
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
-      hash = parse(load_doc(id))
+      hash = parse(load_doc(id), id)
       puts progress(id).to_s + "% done"
       save(id, hash)
     end

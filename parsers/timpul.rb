@@ -47,7 +47,11 @@ class TimpulParser
     end
   end
 
-  def parse(text)
+  def build_url(id)
+    "http://www.timpul.md/u_#{id}/"
+  end
+
+  def parse(text, id)
     doc = Nokogiri::HTML(text)
     return {} if doc.title == "Timpul - Ştiri din Moldova"
     title = doc.title.split(" | ").first.strip rescue doc.title
@@ -59,13 +63,15 @@ class TimpulParser
     content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'').strip
 
     result = {
-      source: "timpul",
-      title: title,
-      original_time: timestring,
-      datetime: parse_timestring(timestring),
-      views: 0, # No data
-      comments: 0, # Disqus iframe
-      content: content
+      source:         "timpul",
+      title:          title,
+      original_time:  timestring,
+      datetime:       parse_timestring(timestring),
+      views:          0, # No data
+      comments:       0, # Disqus iframe
+      content:        content,
+      id:             id,
+      url:            build_url(id)
     }
   rescue => e
     binding.pry
@@ -84,7 +90,7 @@ class TimpulParser
 
   def run
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
-      hash = parse(load_doc(id))
+      hash = parse(load_doc(id), id)
       puts progress(id).to_s + "% done"
       save(id, hash)
     end
