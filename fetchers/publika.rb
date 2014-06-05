@@ -21,7 +21,7 @@ class PublikaFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
+    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
@@ -37,7 +37,7 @@ class PublikaFetcher
 
   def save(page, id)
     return unless valid? page
-    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + "html.gz") do |gz|
+    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
       gz.write page
     end
   end
