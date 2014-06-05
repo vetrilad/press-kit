@@ -43,7 +43,7 @@ class PublikaFetcher
   end
 
   def fetch_single(id)
-    page = RestClient.get(link(id))
+    page = SmartFetcher.fetch(link(id))
     save(page, id)
   rescue RestClient::Forbidden => error
     puts "RestClient::Forbidden caught"

@@ -6,6 +6,7 @@ require 'json'
 require 'i18n'
 
 require_relative "lib/person"
+require_relative "lib/smart_fetcher"
 require_relative "squasher"
 require_relative "analyzer"
 
