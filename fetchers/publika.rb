@@ -36,7 +36,10 @@ class PublikaFetcher
   end
 
   def save(page, id)
-    File.write(PAGES_DIR + id.to_s, page) if valid? page
+    return unless valid? page
+    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + "html.gz") do |gz|
+      gz.write page
+    end
   end
 
   def fetch_single(id)
