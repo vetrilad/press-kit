@@ -1,7 +1,7 @@
 require_relative "../main"
 
 class PublikaFetcher
-  PAGES_DIR = "./data/pages/publika/"
+  PAGES_DIR = "data/pages/publika/"
   FEED_URL  = "http://rss.publika.md/stiri.xml"
 
   def setup
@@ -37,6 +37,7 @@ class PublikaFetcher
 
   def save(page, id)
     return unless valid? page
+
     Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
       gz.write page
     end
@@ -46,9 +47,8 @@ class PublikaFetcher
     page = SmartFetcher.fetch(link(id))
     save(page, id)
   rescue RestClient::Forbidden => error
-    puts "RestClient::Forbidden caught"
-    puts link(id)
-    save(RestClient.get("http://www.publika.md"), id)
+    puts "forbidden: #{link(id)}, prepending www"
+    save(SmartFetcher.fetch("http://www.publika.md"), id)
   end
 
   def progressbar
