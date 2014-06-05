@@ -46,18 +46,6 @@ class PublikaFetcher
     puts "RestClient::Forbidden caught"
     puts link(id)
     save(RestClient.get("http://www.publika.md"), id)
-  rescue Errno::ETIMEDOUT => e
-    sleep 2
-    puts "timeout caught"
-    retry
-  rescue Errno::ECONNREFUSED => e
-    sleep 30
-    puts "refused connection"
-    retry
-  rescue RestClient::BadGateway => error
-    sleep 2
-    puts "RestClient::BadGateway caught"
-    retry
   end
 
   def progressbar
