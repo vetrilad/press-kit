@@ -1,7 +1,7 @@
 require_relative "../main"
 
 class UnimediaFetcher
-  PAGES_DIR = "./data/pages/unimedia/"
+  PAGES_DIR = "data/pages/unimedia/"
   FEED_URL  = "http://unimedia.info/rss/news.xml"
 
   def setup
@@ -15,7 +15,7 @@ class UnimediaFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
+    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
@@ -26,11 +26,13 @@ class UnimediaFetcher
   end
 
   def save(page, id)
-    File.write(PAGES_DIR + id.to_s, page)
+    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
+      gz.write page
+    end
   end
 
   def fetch_single(id)
-    page = RestClient.get(link(id))
+    page = SmartFetcher.fetch(link(id))
     save(page, id)
   rescue RestClient::ResourceNotFound => error
     puts error.message
