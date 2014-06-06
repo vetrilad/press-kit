@@ -14,5 +14,9 @@ class SmartFetcher
     sleep 2
     puts "bad gateway: #{url}"
     retry
+  rescue SocketError => error
+    sleep 60
+    puts "socket error: #{url}"
+    retry
   end
 end
