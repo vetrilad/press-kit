@@ -1,7 +1,7 @@
 require_relative "../main"
 
 class TimpulFetcher
-  PAGES_DIR  = "./data/pages/timpul/"
+  PAGES_DIR  = "data/pages/timpul/"
   TITTER_URL = "https://twitter.com/Timpul"
 
   def setup
@@ -20,7 +20,7 @@ class TimpulFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
+    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
@@ -31,28 +31,14 @@ class TimpulFetcher
   end
 
   def save(page, id)
-    File.write(PAGES_DIR + id.to_s, page)
+    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
+      gz.write page
+    end
   end
 
   def fetch_single(id)
-    page = RestClient.get(link(id))
+    page = SmartFetcher.fetch(link(id))
     save(page, id)
-  rescue URI::InvalidURIError => error
-    puts error.message
-    puts link(id)
-    # URI::InvalidURIError: bad URI(is not URI?):
-    # http://ru.timpul.md/articol/35897-------–----.html
-    save(RestClient.get("http://www.timpul.md"), id)
-  rescue SocketError => error
-    puts error.message
-    puts link(id)
-    # getaddrinfo: nodename nor servname provided, or not known
-    # http://www.timpul.md/u_58670/ also u_58671, u_58672
-    save(RestClient.get("http://www.timpul.md"), id)
-  rescue RestClient::BadGateway => error
-    sleep 2
-    puts "RestClient::BadGateway caught"
-    retry
   end
 
   def progressbar

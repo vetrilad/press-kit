@@ -18,5 +18,7 @@ class SmartFetcher
     sleep 60
     puts "socket error: #{url}"
     retry
+  rescue URI::InvalidURIError => error
+    puts "invalid uri: #{url}"
   end
 end
