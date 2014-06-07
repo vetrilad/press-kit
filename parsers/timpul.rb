@@ -6,10 +6,10 @@ class TimpulParser
   FileUtils.mkdir_p "data/parsed/timpul"
 
   def latest_stored_id
-    @last_stored_id ||= Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
-                          .map(&:to_i)
-                          .sort
-                          .last || 0
+    @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+                        .map(&:to_i)
+                        .sort
+                        .last || 0
   end
 
   def latest_parsed_id
@@ -20,7 +20,7 @@ class TimpulParser
   end
 
   def load_doc(id)
-    File.read "#{PAGES_DIR}/#{id}"
+    Zlib::GzipReader.open("#{PAGES_DIR}/#{id}.html.gz") {|gz| gz.read }
   end
 
   def parse_timestring(timestring)
