@@ -1,6 +1,6 @@
 # A fetcher that knows how to fetch links properly
 class SmartFetcher
-  def self.fetch url
+  def self.fetch url, retry_on_socket_error=true
     RestClient.get url
   rescue Errno::ETIMEDOUT => e
     sleep 2
@@ -17,7 +17,7 @@ class SmartFetcher
   rescue SocketError => error
     sleep 60
     puts "socket error: #{url}"
-    retry
+    retry if retry_on_socket_error
   rescue URI::InvalidURIError => error
     puts "invalid uri: #{url}"
   end

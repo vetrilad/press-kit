@@ -37,7 +37,7 @@ class TimpulFetcher
   end
 
   def fetch_single(id)
-    page = SmartFetcher.fetch(link(id))
+    page = SmartFetcher.fetch(link(id), false)
     save(page, id)
   end
 
