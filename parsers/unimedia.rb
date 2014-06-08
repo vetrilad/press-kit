@@ -63,8 +63,8 @@ class UnimediaParser
   end
 
   def save(id, hash)
-    data = JSON.pretty_generate(hash)
-    File.write(PARSED_DIR + id.to_s, data)
+    page = ParsedPage.new hash
+    page.save!
   end
 
   def progress(id)
