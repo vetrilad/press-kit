@@ -25,5 +25,6 @@ class SmartFetcher
     end
   rescue URI::InvalidURIError => error
     puts "invalid uri: #{url}"
+    nil
   end
 end
