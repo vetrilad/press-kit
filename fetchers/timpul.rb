@@ -38,7 +38,7 @@ class TimpulFetcher
 
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id), false)
-    save(page, id)
+    save(page, id) if page
   end
 
   def progressbar

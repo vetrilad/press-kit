@@ -15,9 +15,14 @@ class SmartFetcher
     puts "bad gateway: #{url}"
     retry
   rescue SocketError => error
-    sleep 60
     puts "socket error: #{url}"
-    retry if retry_on_socket_error
+
+    if retry_on_socket_error
+      sleep 60
+      retry
+    else
+      nil
+    end
   rescue URI::InvalidURIError => error
     puts "invalid uri: #{url}"
   end
