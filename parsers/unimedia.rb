@@ -2,8 +2,6 @@ require_relative "../main"
 
 class UnimediaParser
   PAGES_DIR       = "data/pages/unimedia/"
-  PARSED_DIR      = "data/parsed/unimedia/"
-  FileUtils.mkdir_p "data/parsed/unimedia"
 
   def latest_stored_id
     @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }

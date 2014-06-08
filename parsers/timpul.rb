@@ -2,8 +2,6 @@ require_relative "../main"
 
 class TimpulParser
   PAGES_DIR       = "data/pages/timpul/"
-  PARSED_DIR      = "data/parsed/timpul/"
-  FileUtils.mkdir_p "data/parsed/timpul"
 
   def latest_stored_id
     @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
