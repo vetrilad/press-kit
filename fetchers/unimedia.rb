@@ -33,7 +33,7 @@ class UnimediaFetcher
 
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id))
-    save(page, id)
+    save(page, id) if page
   rescue RestClient::ResourceNotFound => error
     puts "not found: #{link(id)}"
   end
