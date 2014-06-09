@@ -11,14 +11,11 @@ class TimpulParser
   end
 
   def latest_parsed_id
-    @last_parsed_id ||= Dir["#{PARSED_DIR}*"].map{ |f| f.gsub(PARSED_DIR, "") }
-                          .map(&:to_i)
-                          .sort
-                          .last || 0
+    0
   end
 
   def load_doc(id)
-    Zlib::GzipReader.open("#{PAGES_DIR}/#{id}.html.gz") {|gz| gz.read }
+    Zlib::GzipReader.open("#{PAGES_DIR}#{id}.html.gz") {|gz| gz.read }
   end
 
   def parse_timestring(timestring)
@@ -50,7 +47,7 @@ class TimpulParser
   end
 
   def parse(text, id)
-    doc = Nokogiri::HTML(text)
+    doc = Nokogiri::HTML(text, nil, 'UTF-8')
 
     return if doc.title == "Timpul - Ştiri din Moldova"
 
