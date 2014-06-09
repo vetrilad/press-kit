@@ -53,13 +53,17 @@ class TimpulParser
 
   def parse(text, id)
     doc = Nokogiri::HTML(text)
-    return {} if doc.title == "Timpul - Ştiri din Moldova"
+
+    return if doc.title == "Timpul - Ştiri din Moldova"
+
+    unless doc.css('.content').size > 0
+      puts "Timpul: id #{id} - no content"
+      return
+    end
+
     title = doc.title.split(" | ").first.strip rescue doc.title
-
     timestring = doc.css('.box.artGallery').css('.data_author').text.split("\n").map(&:strip)[2]
-
     sanitize_node!(doc)
-
     content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'').strip
 
     result = {
@@ -78,8 +82,9 @@ class TimpulParser
   end
 
   def save (id, hash)
+    puts "parsed: #{hash}"
     page = ParsedPage.new(hash)
-    page.save!
+    page.save
   end
 
   def progress(id)
@@ -92,7 +97,7 @@ class TimpulParser
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       hash = parse(load_doc(id), id)
       puts progress(id).to_s + "% done"
-      save(id, hash)
+      save(id, hash) if hash
     end
   end
 end

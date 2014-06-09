@@ -1,7 +1,7 @@
 class ParsedPage
   include Mongoid::Document
 
-  store_in collection: "parsed_pages", database: "cuvinte"
+  store_in collection: "parsed_pages"
 
   field :source,        :type => String
   field :title,         :type => String

@@ -6,6 +6,8 @@ require 'json'
 require 'i18n'
 require 'mongoid'
 
+Mongoid.load!("mongoid.yml", :development)
+
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
 require_relative "lib/parsed_page"
