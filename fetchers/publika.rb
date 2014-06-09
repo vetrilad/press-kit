@@ -46,9 +46,6 @@ class PublikaFetcher
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id))
     save(page, id) if page
-  rescue RestClient::Forbidden => error
-    puts "forbidden: #{link(id)}, prepending www"
-    save(SmartFetcher.fetch("http://www.publika.md"), id)
   end
 
   def progressbar
