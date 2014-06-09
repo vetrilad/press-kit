@@ -61,7 +61,7 @@ class TimpulParser
     sanitize_node!(doc)
     content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'').strip
 
-    result = {
+    {
       source:         "timpul",
       title:          title,
       original_time:  timestring,
@@ -72,8 +72,6 @@ class TimpulParser
       id:             id,
       url:            build_url(id)
     }
-  rescue => e
-    binding.pry
   end
 
   def save (id, hash)
@@ -92,7 +90,14 @@ class TimpulParser
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       hash = parse(load_doc(id), id)
       puts progress(id).to_s + "% done"
-      save(id, hash) if hash
+
+      if hash
+        puts "Timpul: id #{id}"
+        p hash
+        save(id, hash)
+      else
+        puts "Timpul: id #{id} - no data"
+      end
     end
   end
 end
