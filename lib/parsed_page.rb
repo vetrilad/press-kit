@@ -10,6 +10,6 @@ class ParsedPage
   field :views,         :type => Integer
   field :comments,      :type => Integer
   field :content,       :type => String
-  field :id,            :type => Integer
+  field :article_id,    :type => Integer
   field :url,           :type => String
 end
