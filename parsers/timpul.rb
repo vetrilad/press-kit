@@ -11,7 +11,7 @@ class TimpulParser
   end
 
   def latest_parsed_id
-    0
+    ParsedPage.where(source: 'timpul').desc(:article_id).limit(1).first.article_id
   end
 
   def load_doc(id)
@@ -69,7 +69,7 @@ class TimpulParser
       views:          0, # No data
       comments:       0, # Disqus iframe
       content:        content,
-      id:             id,
+      article_id:     id.to_i,
       url:            build_url(id)
     }
   end
