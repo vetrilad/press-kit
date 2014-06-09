@@ -12,6 +12,8 @@ class TimpulParser
 
   def latest_parsed_id
     ParsedPage.where(source: 'timpul').desc(:article_id).limit(1).first.article_id
+  rescue
+    0
   end
 
   def load_doc(id)
