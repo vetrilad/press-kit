@@ -16,4 +16,4 @@ run: analyze
 	(open http://localhost:8000/visualization)
 
 console:
-	ruby console.rb
+	ruby -e "require('./main.rb');binding.pry"
