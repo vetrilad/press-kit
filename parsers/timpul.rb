@@ -63,6 +63,11 @@ class TimpulParser
     sanitize_node!(doc)
     content = doc.css('.changeFont').text.gsub("\n", '').gsub("\t",'').strip
 
+    unless content.size > 0
+      puts "Timpul: id #{id} - empty content"
+      return
+    end
+
     {
       source:         "timpul",
       title:          title,
@@ -89,9 +94,9 @@ class TimpulParser
   end
 
   def run
-    (latest_parsed_id..latest_stored_id).to_a.each do |id|
+    (latest_parsed_id+1..latest_stored_id).to_a.each do |id|
       hash = parse(load_doc(id), id)
-      puts progress(id).to_s + "% done"
+      puts progress(id).to_s + "#{id} - % done"
 
       if hash
         puts "Timpul: id #{id}"
