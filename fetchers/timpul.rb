@@ -43,7 +43,7 @@ class TimpulFetcher
   
   def valid? page
     return unless page
-    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    doc = Nokogiri::HTML(page, nil, 'UTF-8')
     return false if doc.title == "Timpul - Ştiri din Moldova"
     return false unless doc.css('.content').size > 0
     
