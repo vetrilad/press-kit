@@ -72,7 +72,7 @@ class UnimediaParser
   def run
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       hash = parse(load_doc(id), id)
-      puts "Unimedia: #{progress(id)}"
+      puts "\nUnimedia: #{progress(id)}"
 
       if hash
         save(id, hash)

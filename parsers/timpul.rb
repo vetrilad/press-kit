@@ -82,7 +82,7 @@ class TimpulParser
   end
 
   def save (id, hash)
-    puts "parsed: #{hash}"
+    puts hash
     page = ParsedPage.new(hash)
     page.save
   end
@@ -95,15 +95,15 @@ class TimpulParser
     (latest_parsed_id+1..latest_stored_id).to_a.each do |id|
       begin
         hash = parse(load_doc(id), id)
-        puts "Timpul: #{progress(id)}"
+        puts "\nTimpul: #{progress(id)}"
 
         if hash
           save(id, hash)
         else
-          puts "Timpul: id #{id} - no data"
+          puts "NO DATA"
         end
       rescue Errno::ENOENT => err
-        puts "Timpul: id #{id} - page not saved"
+        puts "NOT SAVED TO DISK"
       end
     end
   end
