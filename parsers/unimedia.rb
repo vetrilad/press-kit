@@ -11,10 +11,9 @@ class UnimediaParser
   end
 
   def latest_parsed_id
-    @last_parsed_id ||= Dir["#{PARSED_DIR}*"].map{ |f| f.gsub(PARSED_DIR, "") }
-                          .map(&:to_i)
-                          .sort
-                          .last || 0
+    ParsedPage.where(source: 'unimedia').desc(:article_id).limit(1).first.article_id
+  rescue
+    0
   end
 
   def load_doc(id)
@@ -36,9 +35,9 @@ class UnimediaParser
   end
 
   def parse(text, id)
-    doc = Nokogiri::HTML(text)
+    doc = Nokogiri::HTML(text, nil, 'UTF-8')
     if doc.title.match(/pagină nu există/) or doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
-      return {}
+      return
     end
 
     title = doc.css('h1.bigtitlex2').first.text rescue doc.title
@@ -53,11 +52,12 @@ class UnimediaParser
       views:          views.to_i,
       comments:       comments.to_i,
       content:        content,
-      id:             id,
+      article_id:     id,
       url:            build_url(id)
     }
   rescue => e
-    binding.pry
+    puts "Timpul: #{e}"
+    return
   end
 
   def save(id, hash)
@@ -66,16 +66,19 @@ class UnimediaParser
   end
 
   def progress(id)
-    total = latest_stored_id - latest_parsed_id
-    current = id - latest_parsed_id
-    (current / total.to_f * 100).round(2)
+    "#{id}/#{latest_stored_id}"
   end
 
   def run
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       hash = parse(load_doc(id), id)
-      puts progress(id).to_s + "% done"
-      save(id, hash)
+      puts "Unimedia: #{progress(id)}"
+
+      if hash
+        save(id, hash)
+      else
+        puts "NO DATA"
+      end
     end
   end
 end

@@ -88,22 +88,22 @@ class TimpulParser
   end
 
   def progress(id)
-    total = latest_stored_id - latest_parsed_id
-    current = id - latest_parsed_id
-    (current / total.to_f * 100).round(2)
+    "#{id}/#{latest_stored_id}"
   end
 
   def run
     (latest_parsed_id+1..latest_stored_id).to_a.each do |id|
-      hash = parse(load_doc(id), id)
-      puts progress(id).to_s + "#{id} - % done"
+      begin
+        hash = parse(load_doc(id), id)
+        puts "Timpul: #{progress(id)}"
 
-      if hash
-        puts "Timpul: id #{id}"
-        p hash
-        save(id, hash)
-      else
-        puts "Timpul: id #{id} - no data"
+        if hash
+          save(id, hash)
+        else
+          puts "Timpul: id #{id} - no data"
+        end
+      rescue Errno::ENOENT => err
+        puts "Timpul: id #{id} - page not saved"
       end
     end
   end
