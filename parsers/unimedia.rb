@@ -17,7 +17,7 @@ class UnimediaParser
   end
 
   def load_doc(id)
-    Zlib::GzipReader.open("#{PAGES_DIR}/#{id}.html.gz") {|gz| gz.read }
+    Zlib::GzipReader.open("#{PAGES_DIR}#{id}.html.gz") {|gz| gz.read }
   end
 
   def parse_timestring(timestring)
@@ -56,13 +56,14 @@ class UnimediaParser
       url:            build_url(id)
     }
   rescue => e
-    puts "Timpul: #{e}"
+    puts "Unimedia: #{e}"
     return
   end
 
   def save(id, hash)
-    page = ParsedPage.new hash
-    page.save!
+    puts hash
+    page = ParsedPage.new(hash)
+    page.save
   end
 
   def progress(id)
@@ -71,13 +72,17 @@ class UnimediaParser
 
   def run
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
-      hash = parse(load_doc(id), id)
-      puts "\nUnimedia: #{progress(id)}"
+      begin
+        puts "\nUnimedia: #{progress(id)}"
+        hash = parse(load_doc(id), id)
 
-      if hash
-        save(id, hash)
-      else
-        puts "NO DATA"
+        if hash
+          save(id, hash)
+        else
+          puts "NO DATA"
+        end
+      rescue Errno::ENOENT => err
+        puts "NOT SAVED TO DISK"
       end
     end
   end
