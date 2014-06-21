@@ -1,7 +1,6 @@
 require_relative "main"
 
 class Squasher
-  PARSED_DIRS  = Dir.glob('data/parsed/*').select {|f| File.directory? f}
   SQUASHED_DIR = "data/squashed/"
 
   attr_accessor :data
@@ -18,25 +17,15 @@ class Squasher
         return true unless text.scan(term).empty?
       end
     end
+
     false
   end
 
-  def most_recent
-    PARSED_DIRS.map do |dir|
-      Dir[dir + "/*"].max_by { |f| File.mtime(f) }
-    end.max_by { |f| File.mtime(f) }
-  end
-
-  def parsed_time
-    File.mtime(most_recent)
-  end
-
-  def squashed_time
-    File.mtime(SQUASHED_DIR + "all.json")
-  end
-
   def check_timestamps!
-    if squashed_time < parsed_time
+    latest_parsed = ParsedPage.find.sort(:_id : -1).limit(1)
+    squashed_time = File.mtime(SQUASHED_DIR + "all.json")
+
+    if squashed_time < latest_parsed.datetime
       # there's nothing new
       puts "Nothing new parsed"
       exit
@@ -46,17 +35,13 @@ class Squasher
   def run
     check_timestamps!
 
-    PARSED_DIRS.each do |parsed_dir|
-      Dir[parsed_dir + "/*"].each do |filename|
-        puts "Loading #{filename}"
-        article = JSON.parse(File.read(filename))
-        next unless article["content"]
+    ParsedPage.find.each do |article|
+      next unless article.content
 
-        article["content"] = I18n.transliterate(article["content"])
+      content = I18n.transliterate article.content
 
-        if has_mention?(article["content"])
-          data << article
-        end
+      if has_mention?(content)
+        data << article
       end
     end
 

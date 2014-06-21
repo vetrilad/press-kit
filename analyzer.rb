@@ -50,6 +50,8 @@ class Analyzer
         result[year.to_s][month.to_s] = month_data
       end
     end
+
+
     File.write("dataset.json", result.to_json)
   end
 end
