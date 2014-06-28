@@ -40,13 +40,13 @@ class TimpulFetcher
     page = SmartFetcher.fetch(link(id), false)
     save(page, id) if valid?(page)
   end
-  
+
   def valid? page
     return unless page
     doc = Nokogiri::HTML(page, nil, 'UTF-8')
     return false if doc.title == "Timpul - Ştiri din Moldova"
     return false unless doc.css('.content').size > 0
-    
+
     true
   end
 

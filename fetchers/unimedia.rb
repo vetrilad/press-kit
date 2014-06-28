@@ -31,9 +31,17 @@ class UnimediaFetcher
     end
   end
 
+  def valid? page
+    return false unless page
+    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    return false if doc.title.match(/pagină nu există/)
+    return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
+    true
+  end
+
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id))
-    save(page, id) if page
+    save(page, id) if valid?(page)
   rescue RestClient::ResourceNotFound => error
     puts "not found: #{link(id)}"
   end
