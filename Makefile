@@ -4,10 +4,7 @@ fetch:
 parse: fetch
 	ruby scripts/parse.rb
 
-squash: parse
-	ruby scripts/squash.rb
-
-analyze: squash
+analyze: parse
 	ruby scripts/analyze.rb
 
 run: analyze

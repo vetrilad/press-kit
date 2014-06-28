@@ -1,57 +1,63 @@
 require_relative "main"
 
 class Analyzer
-  SQUASHED_DIR = "data/squashed/"
+  def compute_mentions
+    without_mentions = ParsedPage.where(:mentions => nil)
+    progressbar = ProgressBar.new(without_mentions.count, :bar, :counter, :rate, :eta)
 
-  attr_accessor :data, :result
+    puts "Computing mentions..."
+    without_mentions.each do |page|
+      progressbar.increment!
 
-  def initialize
-    @data, @result = JSON.parse(File.read(SQUASHED_DIR + "all.json")), {}
+      page.mentions ||= {}
+      People.each do |person|
+        page.mentions[person.key] = person.terms.any? {|t| page.content.include?(t) }
+      end
+
+      page.total_mentions = page.mentions.values.count(true)
+      page.save
+    end
   end
 
-  def run
-    puts "Replacing the timestamps..."
-    data.each do |item|
-      item["time"] = DateTime.parse(item["datetime"])
-    end
+  def compute_dataset
+    puts "Building the final dataset..."
+    data = {}
+    progressbar = ProgressBar.new(6 * 12, :bar, :counter, :rate, :eta)
 
     (2008..2014).each do |year|
-      year_filtered = data.select { |e| e["time"].year == year }
-      result[year.to_s] = {}
+      year_data = data[year.to_s] ||= {}
 
       (1..12).each do |month|
-        month_filtered = year_filtered.select { |e| e["time"].month == month }
-        puts "Working with #{month}.#{year}"
+        progressbar.increment!
+        month_data = year_data[month.to_s] ||= {}
 
-        full_text   = month_filtered.map { |e| e["content"] }.join(" ")
-        month_data  = {}
-        month_total = month_filtered.count
+        pages = ParsedPage.where({
+          :datetime.gte => Date.new(year, month, 1),
+          :datetime.lte => Date.new(year, month, -1)
+        })
+
+        monthly_count = pages.count
+
         People.each do |person|
-          total_occurences = 0
-
-          month_filtered.each do |article|
-            if person.terms.any? { |term| article["content"].scan(term).count > 0 }
-              total_occurences += 1
-            end
-          end
-
-          occurences = if month_total.zero?
+          occurences = if monthly_count == 0
             0.0
           else
-            (total_occurences.to_f / month_total).round(2)
+            total_count = pages.count {|p| p.mentions[person.key.to_s]}
+            (total_count / monthly_count).round(2)
           end
 
           month_data[person.key] = {
-            name: person.name,
+            name:       person.name,
             occurences: occurences
           }
         end
-
-        result[year.to_s][month.to_s] = month_data
       end
     end
+  end
 
-
-    File.write("dataset.json", result.to_json)
+  def run
+    #compute_mentions
+    dataset = compute_dataset
+    File.write("dataset.json", dataset.to_json)
   end
 end

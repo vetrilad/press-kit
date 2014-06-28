@@ -11,7 +11,6 @@ Mongoid.load!("mongoid.yml", :development)
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
 require_relative "lib/parsed_page"
-require_relative "squasher"
 require_relative "analyzer"
 
 require_relative "fetchers/timpul"
