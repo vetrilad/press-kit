@@ -30,6 +30,7 @@ class Analyzer
 
   def compute_dataset
     puts "Building the final dataset..."
+    now = Time.now
     data = {}
     progressbar = ProgressBar.new(6 * 12, :bar, :counter, :rate, :eta)
 
@@ -38,6 +39,10 @@ class Analyzer
 
       (1..12).each do |month|
         progressbar.increment!
+
+        #No need to do anything in the future
+        return data if now.year == year and now.month < month
+
         month_data = year_data[month.to_s] ||= {}
 
         pages = ParsedPage.where({
@@ -62,5 +67,7 @@ class Analyzer
         end
       end
     end
+
+    return data
   end
 end
