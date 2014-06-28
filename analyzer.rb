@@ -56,7 +56,7 @@ class Analyzer
   end
 
   def run
-    #compute_mentions
+    compute_mentions
     dataset = compute_dataset
     File.write("dataset.json", dataset.to_json)
   end
