@@ -16,8 +16,6 @@ class Analyzer
 
     puts "Computing mentions..."
     without_mentions.each do |page|
-      progressbar.increment!
-
       page.mentions ||= {}
       People.each do |person|
         page.mentions[person.key] = person.terms.any? {|t| page.content.include?(t) }
@@ -25,6 +23,7 @@ class Analyzer
 
       page.total_mentions = page.mentions.values.count(true)
       page.save
+      progressbar.increment!
     end
   end
 
@@ -38,8 +37,6 @@ class Analyzer
       year_data = data[year.to_s] ||= {}
 
       (1..12).each do |month|
-        progressbar.increment!
-
         #No need to do anything in the future
         return data if now.year == year and now.month < month
 
@@ -64,6 +61,8 @@ class Analyzer
             name:       person.name,
             occurences: occurences
           }
+
+          progressbar.increment!
         end
       end
     end
