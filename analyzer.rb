@@ -1,6 +1,15 @@
 require_relative "main"
 
 class Analyzer
+  def run
+    compute_mentions
+    dataset = compute_dataset
+    puts "Saving data to dataset.json..."
+    File.write("dataset.json", dataset.to_json)
+  end
+
+  private
+
   def compute_mentions
     without_mentions = ParsedPage.where(:mentions => nil)
     progressbar = ProgressBar.new(without_mentions.count, :bar, :counter, :rate, :eta)
@@ -53,11 +62,5 @@ class Analyzer
         end
       end
     end
-  end
-
-  def run
-    compute_mentions
-    dataset = compute_dataset
-    File.write("dataset.json", dataset.to_json)
   end
 end
