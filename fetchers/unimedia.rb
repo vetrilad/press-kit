@@ -33,7 +33,7 @@ class UnimediaFetcher
 
   def valid? page
     return false unless page
-    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    doc = Nokogiri::HTML(page, nil, 'UTF-8')
     return false if doc.title.match(/pagină nu există/)
     return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
     true
