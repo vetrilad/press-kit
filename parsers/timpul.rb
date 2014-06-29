@@ -94,8 +94,8 @@ class TimpulParser
   def run
     (latest_parsed_id+1..latest_stored_id).to_a.each do |id|
       begin
-        hash = parse(load_doc(id), id)
         puts "\nTimpul: #{progress(id)}"
+        hash = parse(load_doc(id), id)
 
         if hash
           save(id, hash)
