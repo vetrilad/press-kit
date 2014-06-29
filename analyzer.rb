@@ -54,7 +54,7 @@ class Analyzer
             0.0
           else
             total_count = pages.count {|p| p.mentions[person.key.to_s]}
-            (total_count / monthly_count).round(2)
+            (total_count.to_f / monthly_count).round(2)
           end
 
           month_data[person.key] = {
@@ -62,8 +62,8 @@ class Analyzer
             occurences: occurences
           }
 
-          progressbar.increment!
         end
+        progressbar.increment!
       end
     end
 
