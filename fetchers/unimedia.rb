@@ -1,7 +1,7 @@
 require_relative "../main"
 
 class UnimediaFetcher
-  PAGES_DIR = "./data/pages/unimedia/"
+  PAGES_DIR = "data/pages/unimedia/"
   FEED_URL  = "http://unimedia.info/rss/news.xml"
 
   def setup
@@ -15,7 +15,7 @@ class UnimediaFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.gsub(PAGES_DIR, "") }
+    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
@@ -26,18 +26,24 @@ class UnimediaFetcher
   end
 
   def save(page, id)
-    File.write(PAGES_DIR + id.to_s, page)
+    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
+      gz.write page
+    end
+  end
+
+  def valid? page
+    return false unless page
+    doc = Nokogiri::HTML(page, nil, 'UTF-8')
+    return false if doc.title.match(/pagină nu există/)
+    return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
+    true
   end
 
   def fetch_single(id)
-    page = RestClient.get(link(id))
-    save(page, id)
+    page = SmartFetcher.fetch(link(id))
+    save(page, id) if valid?(page)
   rescue RestClient::ResourceNotFound => error
-    puts error.message
-    puts link(id)
-    # URI::InvalidURIError: bad URI(is not URI?):
-    # http://ru.timpul.md/articol/35897-------–----.html
-    save(RestClient.get("http://unimedia.info"), id)
+    puts "not found: #{link(id)}"
   end
 
   def progressbar
