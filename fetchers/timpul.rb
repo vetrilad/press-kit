@@ -2,7 +2,7 @@ require_relative "../main"
 
 class TimpulFetcher
   PAGES_DIR  = "data/pages/timpul/"
-  TITTER_URL = "https://twitter.com/Timpul"
+  MAIN_PAGE = "http://www.timpul.md/"
 
   def setup
     FileUtils.mkdir_p PAGES_DIR
@@ -10,13 +10,10 @@ class TimpulFetcher
 
   def most_recent_id
     return @most_recent_id if @most_recent_id
-    doc = Nokogiri::XML(RestClient.get(TITTER_URL))
-    @most_recent_id = doc.text
-                         .scan(/timpul.md\/u_[\d]+\//)
-                         .max_by { |f| f.scan(/\d+/) }
-                         .scan(/\d+/)
-                         .first
-                         .to_i
+    doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
+    @most_recent_id = doc.css("h2.boxStireTitleSmall a")
+                         .map { |l| l['href'].scan(/-([\d]+)\.html/)[0][0].to_i }
+                         .max
   end
 
   def latest_stored_id
