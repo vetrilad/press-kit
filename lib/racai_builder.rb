@@ -3,7 +3,7 @@ require_relative '../main'
 class RacaiBuilder
 
   AKUENNE_WORD  = " .pomedor. "
-  AKUENNE_RACAI = /pomedor\tNcms-n\tpomedor/
+  AKUENNE_RACAI = /\npomedor\t.*\tpomedor/
 
   def initialize(pages)
     @pages = pages
@@ -62,6 +62,10 @@ private
 
   def extract_response(response, action)
     action = action.to_s
-    response.body[(action+"_response").to_sym][(action+"_return").to_sym]
+    result = response.body[(action+"_response").to_sym][(action+"_return").to_sym]
+    if result.nil?
+      return response.hash[(action+"_return").to_sym]
+    end
+    result
   end
 end
