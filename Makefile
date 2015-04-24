@@ -14,3 +14,7 @@ run: analyze
 
 console:
 	ruby -e "require('./main.rb');binding.pry"
+
+racai: parse
+	ruby scripts/racai.rb
+

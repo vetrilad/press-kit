@@ -5,12 +5,16 @@ require 'pry'
 require 'json'
 require 'i18n'
 require 'mongoid'
+require 'savon'
 
 Mongoid.load!("mongoid.yml", :development)
 
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
 require_relative "lib/parsed_page"
+require_relative "lib/word"
+require_relative "lib/batch_racai_fetcher"
+require_relative "lib/racai_builder"
 require_relative "analyzer"
 
 require_relative "fetchers/timpul"

@@ -11,9 +11,9 @@ class TimpulFetcher
   def most_recent_id
     return @most_recent_id if @most_recent_id
     doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
-    @most_recent_id = doc.css("h2.boxStireTitleSmall a")
-                         .map { |l| l['href'].scan(/-([\d]+)\.html/)[0][0].to_i }
-                         .max
+    hrefs = doc.css("a").map { |link| link["href"] }.compact
+    possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
+    @most_recent_id = possible_ids.map { |id| id.first.to_i }.max
   end
 
   def latest_stored_id
