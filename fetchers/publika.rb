@@ -2,7 +2,7 @@ require_relative "../main"
 
 class PublikaFetcher
   PAGES_DIR = "data/pages/publika/"
-  FEED_URL  = "http://rss.publika.md/stiri.xml"
+  FEED_URL = "http://rss.publika.md/stiri.xml"
 
   def setup
     FileUtils.mkdir_p PAGES_DIR
@@ -28,7 +28,7 @@ class PublikaFetcher
   end
 
   def link(id)
-    "http://publika.md/#{id}1"
+    "http://publika.md/#{id}"
   end
 
   def valid?(page)

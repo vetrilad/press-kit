@@ -1,6 +1,6 @@
 development:
-  sessions:
+  clients:
     default:
-      database: cuvinte
+      database: cuvintele
       hosts:
         - localhost:27017
