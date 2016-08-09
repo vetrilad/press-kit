@@ -1,7 +1,7 @@
 Bundler.require :default, :test
 
-VCR.configure do |c|
-  c.cassette_library_dir     = 'spec/cassettes'
-  c.hook_into                  :webmock
-  c.configure_rspec_metadata!
+VCR.configure do |config|
+  config.cassette_library_dir     = 'spec/cassettes'
+  config.hook_into                  :webmock
+  config.configure_rspec_metadata!
 end

@@ -7,7 +7,7 @@ require 'i18n'
 require 'mongoid'
 require 'savon'
 
-Mongoid.load!("../mongoid.yml", :development)
+Mongoid.load!("mongoid.yml", :development)
 
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
