@@ -31,7 +31,7 @@ class PublikaParser
   end
 
   def build_url(id)
-    "http://unimedia.info/stiri/-#{id}.html"
+    "http://publika.md/#{id}"
   end
 
   def has_data?(doc)
@@ -44,23 +44,24 @@ class PublikaParser
 
     return unless has_data?(doc)
 
-    # title = doc.css('h1.bigtitlex2').first.text rescue doc.title
+    title = doc.xpath("//div[@id='articleLeftColumn']/h1")
     # timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
-    # content = doc.css('.news-text').text.gsub(/\r|\n/, ' ').squeeze(' ')
+    content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
+                  .css("p").text
 
     {
-        # source:         "unimedia",
-        # title:          title,
+        source:         "publika",
+        title:          title,
         # original_time:  timestring,
         # datetime:       parse_timestring(timestring),
         # views:          views.to_i,
         # comments:       comments.to_i,
-        # content:        content,
-        # article_id:     id,
-        # url:            build_url(id)
+        content:        content,
+        article_id:     id,
+        url:            build_url(id)
     }
   rescue => e
-    puts "Unimedia: #{e}"
+    puts "Publika: #{e}"
     return
   end
 
@@ -79,7 +80,7 @@ class PublikaParser
 
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       begin
-        puts "\nUnimedia: #{progress(id)}"
+        puts "\nPublika: #{progress(id)}"
         hash = parse(load_doc(id), id)
 
         if hash
