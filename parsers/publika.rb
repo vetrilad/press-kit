@@ -4,14 +4,14 @@ class PublikaParser
   attr_accessor :page_dir, :parsed_data
 
   def latest_stored_id
-    @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+    @latest_stored_id = Dir["#{@page_dir}*"].map{ |f| f.split('.').first.gsub(@page_dir, "") }
                             .map(&:to_i)
                             .sort
                             .last || 0
   end
 
   def latest_parsed_id
-    ParsedPage.where(source: 'unimedia').desc(:article_id).limit(1).first.article_id
+    ParsedPage.where(source: 'publika').desc(:article_id).limit(1).first.article_id
   rescue
     0
   end
@@ -35,8 +35,7 @@ class PublikaParser
   end
 
   def has_data?(doc)
-    true
-    # doc.title.match(/pagină nu există/) || doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
+    doc.xpath("//div[@class='articleTags']").any?
   end
 
   def parse(text, id)
@@ -51,7 +50,7 @@ class PublikaParser
 
     {
         source:         "publika",
-        title:          title,
+        title:          title.text,
         # original_time:  timestring,
         # datetime:       parse_timestring(timestring),
         # views:          views.to_i,
@@ -65,8 +64,7 @@ class PublikaParser
     return
   end
 
-  def save(id, hash)
-    puts hash
+  def save hash
     page = ParsedPage.new(hash)
     page.save
   end
@@ -81,13 +79,9 @@ class PublikaParser
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       begin
         puts "\nPublika: #{progress(id)}"
-        hash = parse(load_doc(id), id)
 
-        if hash
-          save(id, hash)
-        else
-          puts "NO DATA"
-        end
+        parse(load_doc(id), id) ? save(hash) : puts("NO DATA")
+
       rescue Errno::ENOENT => err
         puts "NOT SAVED TO DISK"
       end
