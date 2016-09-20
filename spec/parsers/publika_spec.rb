@@ -7,8 +7,8 @@ describe "PubliKaParser" do
     it "has data" do
       publika_parser = PublikaParser.new
       publika_parser.page_dir = 'spec/fixtures/publika/'
-      doc = publika_parser.load_doc(2699211)
-      expect(publika_parser.parse(doc, 2699211)).to_not be nil
+      doc = publika_parser.load_doc(10211)
+      expect(publika_parser.parse(doc, 10211)).to_not be nil
     end
 
     it "does not have data" do
@@ -19,10 +19,10 @@ describe "PubliKaParser" do
     end
   end
 
-
-  # it "Finds the text within a document" do
-  #   publika_parser = PublikaParser.new
-  #   publika_parser.page_dir = 'spec/fixtures/publika/'
-  #
-  # end
+  it "Finds the text within a document" do
+    publika_parser = PublikaParser.new
+    publika_parser.page_dir = 'spec/fixtures/publika/'
+    doc = publika_parser.load_doc(10211)
+    expect(publika_parser.parse(doc, 10211)).to be_kind_of Hash
+  end
 end

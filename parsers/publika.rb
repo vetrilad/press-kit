@@ -43,18 +43,22 @@ class PublikaParser
 
     return unless has_data?(doc)
 
-    title = doc.xpath("//div[@id='articleLeftColumn']/h1")
+    title = doc.xpath("//div[@id='articleLeftColumn']/h1").text
     # timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
-    content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
-                  .css("p").text
+
+    # this xpath parses the data from one tag to another. Fetching just the text
+    # content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
+    #               .css("p").text
+
+    content = doc.xpath("//div[@itemprop='articleBody']").text
 
     {
-        source:         "publika",
-        title:          title.text,
-        # original_time:  timestring,
-        # datetime:       parse_timestring(timestring),
-        # views:          views.to_i,
-        # comments:       comments.to_i,
+        source:         "Publika",
+        title:          title,
+        # original_time:  timestring || "Empty",
+        # datetime:       parse_timestring(timestring) || "Empty",
+        # views:          views.to_i || 0,
+        # comments:       comments.to_i || 0,
         content:        content,
         article_id:     id,
         url:            build_url(id)
