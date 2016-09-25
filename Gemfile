@@ -9,7 +9,9 @@ source "https://rubygems.org" do
     gem 'mongoid'
     gem 'savon'
     gem 'parallel'
+    gem 'rake'
   end
+
   group :test do
     gem 'rspec'
     gem 'vcr'
