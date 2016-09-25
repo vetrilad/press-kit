@@ -32,12 +32,10 @@ class PublikaFetcher
   end
 
   def valid?(page)
-    page.include?("publicat in data de")
+    !page.nil? && page.include?("publicat in data de")
   end
 
   def save(page, id)
-    return unless valid? page
-
     Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
       gz.write page
     end
@@ -45,7 +43,7 @@ class PublikaFetcher
 
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id))
-    save(page, id) if page
+    save(page, id) if valid?(page)
   end
 
   def progressbar
