@@ -27,7 +27,8 @@ class PublikaParser
     timestring.gsub!("iun", "jun")
     timestring.gsub!("iul", "jul")
     timestring.gsub!("noi", "nov")
-    DateTime.strptime(timestring, "ora: %k:%M, %d %b %Y").iso8601
+    timestring.gsub!("Aprilie", "apr")
+    DateTime.strptime(timestring, "%d %b %Y ora %k:%M").iso8601
   end
 
   def build_url(id)
@@ -44,7 +45,11 @@ class PublikaParser
     return unless has_data?(doc)
 
     title = doc.xpath("//div[@id='articleLeftColumn']/h1").text
-    # timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
+    tags = doc.xpath("//div[@class='articleTags']/a")
+    article_info = doc.xpath("//div[@class='articleInfo']").text.split(', ')
+    date = article_info[2]
+    ora = article_info[3][0..9]
+
 
     # this xpath parses the data from one tag to another. Fetching just the text
     # content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
@@ -55,10 +60,10 @@ class PublikaParser
     {
         source:         "Publika",
         title:          title,
-        # original_time:  timestring || "Empty",
-        # datetime:       parse_timestring(timestring) || "Empty",
-        # views:          views.to_i || 0,
-        # comments:       comments.to_i || 0,
+        datetime:       parse_timestring(date.concat ora),
+        tags:           tags.to_a.map(&:text),
+        views:          0,
+        comments:       0,
         content:        content,
         article_id:     id,
         url:            build_url(id)
