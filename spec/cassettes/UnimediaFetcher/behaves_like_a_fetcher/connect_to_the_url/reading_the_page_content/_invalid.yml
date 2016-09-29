@@ -1,0 +1,79 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://unimedia.info/stiri/-857438.html
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - nginx/1.6.1
+      Date:
+      - Tue, 27 Sep 2016 16:58:03 GMT
+      Content-Type:
+      - text/html
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - PHP/5.5.16-1~dotdeb.1
+      Set-Cookie:
+      - UNI_SESSION_ID=0h387b4visspq5k0fc10ietqs2; expires=Thu, 29-Sep-2016 16:58:03
+        GMT; Max-Age=172800; path=/
+      - ci_session2=8Dtbm43%2FSglKBxsTEexDVfXH4L6OYnS5ajdktTfvGpC%2FeZ8H1UCi6d5nMIeuoBvAgC89UYYCGROt9DE%2FOoYMFG2wYe5XIxnrxYPkCSic%2BNuDIgmN%2BdkoB0HX57lGkDGGmK7KyUFeHwwVn82MiZzmYi160GhNJ6a6QPf%2Fx69wr7zvTv0A7KOSZEraO38vxgmoEpelDrONIVv9pDq%2BL1RL5tUBHtS2nWDbL%2BEsJuG14tO32hjJd271EcisCw4rezAXhSdq5i2ip5OSiLA6NdxLhfgMahumWd8EdQ5i6BiAwKQ0NiWWejQW3%2F%2FN7ME%2BthxKupilAlFY8YKFxz3D4CZ0pBVzbe4jUreQasBb4gEDrPJ1jcOskgoQlXWKGsd01e54;
+        expires=Tue, 27-Sep-2016 18:58:03 GMT; Max-Age=7200; path=/
+      - ci_session2=kq245K0lnlld2cRUCbCha6p5C4vNXOJi2sreahoUi%2BnTbFAL6VgpXYYQtlDqVt8Zlym7iX4b6Qk0EdiWU%2BUlvR7KxefjByhBrcQIRdlA%2BffoRUMi6c%2FzPcYZhQJWmsqgyUVHoLiSxOeIXvA9OhTUV8e1%2FHsUTs9kDS8Oe5PGebIFhLljUBh3nWVpSRHG2cRnNP3Px8YXRK2I0Mj1%2FTp853VC40GP4bqU0AA0qxujgUh46qjwq6RhSXnvRK0XqWmLsTFKd%2FomGaudyfhZ7NP%2BnRMuqTtlZvJCY0awDqyTvq8%3D;
+        expires=Tue, 27-Sep-2016 18:58:03 GMT; Max-Age=7200; path=/
+      Expires:
+      - Tue, 03 Jul 2001 06:00:00 GMT
+      Last-Modified:
+      - Tue, 27 Sep 2016 16:58:03 GMT
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, max-age=0
+      - post-check=0, pre-check=0
+      Pragma:
+      - no-cache
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA41V227bRhB9pr9iSqNFC4iiSEmWwlAqjFwAPzQNiqbvI3JF
+        rk1y2d2lJCfIkz+jv6OHflZnd0lJSWMgFozlDudy5syF6Q+5yPRjy6DUdbW+
+        Ss0BFTbFymeNbwQM8/WVl9ZMI2QlSsX0yv/w59tgSa+9VHNdsfVtxlDp4xO0
+        WPCGzqYDduBGlIZOhXSVfiTdK88zUUZgXI9gI/LHERj3NVjNEeR8N4J2BLxp
+        Oz2CrZD1J7LyapTkPYHJS3NrMc95UwzXrWh0sMWaV48J3EqOFEFhowLFJN8a
+        i8/0j8mOK64ZBcak4s2DdZyJSsgErqd4s3jR61rlUuyYhC90omw2XcwtAs0O
+        OshZJiRqLghYIxo2RDJ5OcsNZg+FFF2TB0OgLDI/62QQXcam5JypTUrxjyyB
+        aNkerIFjIdCiTSB2MpPZdUYEIG8GvK2gPC0qySrCt7PIvD3PdUneJpMfrbeS
+        8aLUCSwWUe//DDeBTlY/l1q3SRgqPeaNZhIf9LjOQxONNTpERQ2hQl4X4Wwy
+        G9+3xS9A0CCjlwRFspahDixyi7JmSmHBPhFi7wwRN0pUnXYQbWbzHl/FtoRu
+        uPW5O2EQTybf4CSg3HrxkNz0JOnTnw2Cz1cEZLzptBZNbEH19diX1CWWoTMf
+        p/Kda+VthMwZ9Y7ryct6zf4Hohf0GJY9SgvBtrqr+QA6vvlSP55fGlx/NRWu
+        H6YnFWoIxVBmZd+DPUwqMhDVPIfrWXSTYWxSpMKkVF87nGnoJj41/WsGnIYR
+        eL7yT+1lxv4s7utphV5aRus3UqBkQM1AriKj66WtPbx3jPYDvZPHp44G3KwK
+        NJsCacSVhuL4RC17fBpbm9AZDbZ/0VKRHanUoOhxxz9yjf/+wyFFKCXbrvy+
+        T7uG1yznSN26FaG/fi95jfC+30sf3t399ub13W0a4nr0rTgKO0JT0fAY54bk
+        rkLZVZAzyAi3NgnQc40c7oX6Cqtlyhg5PrzUPANmZhCfQZih9ek7khWjfWXK
+        FmzEoXcCYIrgKAT6S12zmLVNPnme06aGBmu6ZQcfdlh19EhMa1oGQdttgsVi
+        Np9O4+V0cRMvlvMXyXIaLZeTeBYvfAi/z7PYnly//f2Pu9dJNPleW85Opu7D
+        8WxMs1GHXP72wWy+lR9HjhxHjP8cXtVtan6yVniK+YoYPj75kFW0rFZ+P+wX
+        4NPwxG8amoo5RlKVSd5qcEQbaOE97tBJCZzMTiXd7/fjQoiiYm43ijbMFAs3
+        Epv8V+NxRdeLyv6EdfvSfmal8Nc0fDaSDZu6xh8w9WcaunmkmTIf6v8A/HaM
+        97gHAAA=
+    http_version: 
+  recorded_at: Tue, 27 Sep 2016 17:00:47 GMT
+recorded_with: VCR 3.0.3
