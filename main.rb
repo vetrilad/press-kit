@@ -23,3 +23,4 @@ require_relative "fetchers/publika"
 
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
+require_relative "parsers/publika"

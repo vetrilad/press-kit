@@ -45,11 +45,10 @@ class PublikaParser
     return unless has_data?(doc)
 
     title = doc.xpath("//div[@id='articleLeftColumn']/h1").text
-    tags = doc.xpath("//div[@class='articleTags']/a")
+    # tags = doc.xpath("//div[@class='articleTags']/a")
     article_info = doc.xpath("//div[@class='articleInfo']").text.split(', ')
     date = article_info[2]
     ora = article_info[3][0..9]
-
 
     # this xpath parses the data from one tag to another. Fetching just the text
     # content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
@@ -61,7 +60,7 @@ class PublikaParser
         source:         "Publika",
         title:          title,
         datetime:       parse_timestring(date.concat ora),
-        tags:           tags.to_a.map(&:text),
+        # tags:           tags.to_a.map(&:text),
         views:          0,
         comments:       0,
         content:        content,
@@ -83,16 +82,19 @@ class PublikaParser
   end
 
   def run
-    @page_dir = "data/pages/unimedia/"
+    @page_dir = "data/pages/publika/"
 
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       begin
         puts "\nPublika: #{progress(id)}"
 
-        parse(load_doc(id), id) ? save(hash) : puts("NO DATA")
+        hash = parse(load_doc(id), id)
+
+        puts hash
+        hash ? save(hash) : puts("NO DATA")
 
       rescue Errno::ENOENT => err
-        puts "NOT SAVED TO DISK"
+        puts "NOT SAVED TO DISK #{err}"
       end
     end
   end
