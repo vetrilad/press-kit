@@ -1,6 +1,7 @@
 Bundler.require :default, :test
 
 require "support/shared_examples"
+require "support/shared_context"
 
 VCR.configure do |config|
   config.cassette_library_dir     = 'spec/cassettes'

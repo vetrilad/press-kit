@@ -22,12 +22,18 @@ class PublikaParser
 
   def parse_timestring(timestring)
     # ora: 09:42, 02 mai 2009
-    timestring.gsub!("ian", "jan")
-    timestring.gsub!("mai", "may")
-    timestring.gsub!("iun", "jun")
-    timestring.gsub!("iul", "jul")
-    timestring.gsub!("noi", "nov")
-    timestring.gsub!("Aprilie", "apr")
+    timestring.gsub!("Aprilie",    "apr")
+    timestring.gsub!("Mai",        "may")
+    timestring.gsub!("Iunie",      "jun")
+    timestring.gsub!("Iulie",      "jul")
+    timestring.gsub!("August",     "aug")
+    timestring.gsub!("Septembrie", "sep")
+    timestring.gsub!("Octombrie",  "oct")
+    timestring.gsub!("Noiembrie",  "nov")
+    timestring.gsub!("Decembrie",  "dec")
+    timestring.gsub!("Ianuarie",   "jan")
+    timestring.gsub!("Februarie",  "feb")
+    timestring.gsub!("Martie",     "mar")
     DateTime.strptime(timestring, "%d %b %Y ora %k:%M").iso8601
   end
 
@@ -57,7 +63,7 @@ class PublikaParser
     content = doc.xpath("//div[@itemprop='articleBody']").text
 
     {
-        source:         "Publika",
+        source:         "publika",
         title:          title,
         datetime:       parse_timestring(date.concat ora),
         # tags:           tags.to_a.map(&:text),
@@ -91,7 +97,10 @@ class PublikaParser
         hash = parse(load_doc(id), id)
 
         puts hash
+
         hash ? save(hash) : puts("NO DATA")
+
+        puts "SUCCES"
 
       rescue Errno::ENOENT => err
         puts "NOT SAVED TO DISK #{err}"

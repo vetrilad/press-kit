@@ -6,8 +6,9 @@ require 'json'
 require 'i18n'
 require 'mongoid'
 require 'savon'
+require_relative 'lib/config/database'
 
-Mongoid.load!("mongoid.yml", ENV['ENV'] || :development)
+Config::Database.setup
 
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
