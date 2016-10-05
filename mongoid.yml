@@ -1,6 +1,16 @@
 development:
   clients:
     default:
-      database: cuvintele
+      database: cuvinte_test
       hosts:
         - localhost:27017
+production:
+  clients:
+    default:
+      database: cuvinte
+      hosts:
+       - localhost:4321
+      options:
+        user: dorici
+        password: password
+        auth_source: admin

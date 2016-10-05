@@ -22,12 +22,18 @@ class PublikaParser
 
   def parse_timestring(timestring)
     # ora: 09:42, 02 mai 2009
-    timestring.gsub!("ian", "jan")
-    timestring.gsub!("mai", "may")
-    timestring.gsub!("iun", "jun")
-    timestring.gsub!("iul", "jul")
-    timestring.gsub!("noi", "nov")
-    timestring.gsub!("Aprilie", "apr")
+    timestring.gsub!("Aprilie",    "apr")
+    timestring.gsub!("Mai",        "may")
+    timestring.gsub!("Iunie",      "jun")
+    timestring.gsub!("Iulie",      "jul")
+    timestring.gsub!("August",     "aug")
+    timestring.gsub!("Septembrie", "sep")
+    timestring.gsub!("Octombrie",  "oct")
+    timestring.gsub!("Noiembrie",  "nov")
+    timestring.gsub!("Decembrie",  "dec")
+    timestring.gsub!("Ianuarie",   "jan")
+    timestring.gsub!("Februarie",  "feb")
+    timestring.gsub!("Martie",     "mar")
     DateTime.strptime(timestring, "%d %b %Y ora %k:%M").iso8601
   end
 
@@ -45,11 +51,10 @@ class PublikaParser
     return unless has_data?(doc)
 
     title = doc.xpath("//div[@id='articleLeftColumn']/h1").text
-    tags = doc.xpath("//div[@class='articleTags']/a")
+    # tags = doc.xpath("//div[@class='articleTags']/a")
     article_info = doc.xpath("//div[@class='articleInfo']").text.split(', ')
     date = article_info[2]
     ora = article_info[3][0..9]
-
 
     # this xpath parses the data from one tag to another. Fetching just the text
     # content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
@@ -58,10 +63,10 @@ class PublikaParser
     content = doc.xpath("//div[@itemprop='articleBody']").text
 
     {
-        source:         "Publika",
+        source:         "publika",
         title:          title,
         datetime:       parse_timestring(date.concat ora),
-        tags:           tags.to_a.map(&:text),
+        # tags:           tags.to_a.map(&:text),
         views:          0,
         comments:       0,
         content:        content,
@@ -83,16 +88,22 @@ class PublikaParser
   end
 
   def run
-    @page_dir = "data/pages/unimedia/"
+    @page_dir = "data/pages/publika/"
 
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       begin
         puts "\nPublika: #{progress(id)}"
 
-        parse(load_doc(id), id) ? save(hash) : puts("NO DATA")
+        hash = parse(load_doc(id), id)
+
+        puts hash
+
+        hash ? save(hash) : puts("NO DATA")
+
+        puts "SUCCES"
 
       rescue Errno::ENOENT => err
-        puts "NOT SAVED TO DISK"
+        puts "NOT SAVED TO DISK #{err}"
       end
     end
   end
