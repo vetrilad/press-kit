@@ -1,7 +1,5 @@
 require_relative "./main"
 
-task default: %w[fetch]
-
 namespace :fetch do
   task :timpul do
     TimpulFetcher.new.run
@@ -31,21 +29,34 @@ namespace :parse do
 end
 
 namespace :watch do
-  namespace :timpul do
-    task :fetcher do
-      while true do
-        puts "Restarting Fetcher"
-        TimpulFetcher.new.run
-        sleep 10
-      end
+  ENV["ENV"] = "production"
+  task :timpul do
+    while true do
+      puts "Restarting Fetcher"
+      TimpulFetcher.new.run
+      puts "Restarting parser"
+      TimpulParser.new.run
+      sleep 10
     end
+  end
 
-    task :parser do
-      while true do
-        puts "Restarting parser"
-        TimpulParser.new.run
-        sleep 10
-      end
+  task :publika do
+    while true do
+      puts "Restarting Fetcher"
+      PublikaFetcher.new.run
+      puts "Restarting parser"
+      PublikaParser.new.run
+      sleep 10
+    end
+  end
+
+  task :unimedia do
+    while true do
+      puts "Restarting Fetcher"
+      UnimediaFetcher.new.run
+      puts "Restarting parser"
+      UnimediaParser.new.run
+      sleep 10
     end
   end
 end
