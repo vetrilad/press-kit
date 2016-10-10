@@ -16,15 +16,25 @@ class PublikaFetcher
                          .scan(/_([\d]+)\.html/)
                          .first
                          .first
-                         .to_i / 10
-    # dividing by 10 is pure publika magic
+                         .to_i
   end
 
+  # def latest_stored_id
+  #   Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+  #                       .map(&:to_i)
+  #                       .sort
+  #                       .last || 0
+  # end
+
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-                        .map(&:to_i)
-                        .sort
-                        .last || 0
+    ParsedPage.where(source: 'publika').desc(:article_id).limit(1).first.article_id if ENV["ENV"]=="production"
+
+    if ENV["ENV"] != "production"
+      Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+                          .map(&:to_i)
+                          .sort
+                          .last || 0
+    end
   end
 
   def link(id)

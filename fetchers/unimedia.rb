@@ -15,10 +15,14 @@ class UnimediaFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-                        .map(&:to_i)
-                        .sort
-                        .last || 0
+    ParsedPage.where(source: 'unimedia').desc(:article_id).limit(1).first.article_id if ENV["ENV"] == "prodction"
+
+    if ENV["production"] != "production"
+      Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+          .map(&:to_i)
+          .sort
+          .last || 0
+    end
   end
 
   def link(id)
