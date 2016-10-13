@@ -19,13 +19,6 @@ class PublikaFetcher
                          .to_i
   end
 
-  # def latest_stored_id
-  #   Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-  #                       .map(&:to_i)
-  #                       .sort
-  #                       .last || 0
-  # end
-
   def latest_stored_id
     ParsedPage.where(source: 'publika').desc(:article_id).limit(1).first.article_id if ENV["ENV"]=="production"
 
@@ -69,7 +62,7 @@ class PublikaFetcher
       return
     end
 
-    latest_stored_id.upto(most_recent_id) do |id|
+    (latest_stored_id..most_recent_id).step(10) do |id|
       fetch_single(id)
       progressbar.increment!
     end

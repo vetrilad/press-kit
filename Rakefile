@@ -12,6 +12,10 @@ namespace :fetch do
   task :unimedia do
     UnimediaFetcher.new.run
   end
+
+  task :protv do
+    ProTvFetcher.new.run
+  end
 end
 
 namespace :parse do
