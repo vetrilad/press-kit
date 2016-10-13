@@ -2,7 +2,7 @@ require_relative "../main"
 
 class UnimediaFetcher
   PAGES_DIR = "data/pages/unimedia/"
-  FEED_URL  = "http://unimedia.info/rss/news.xml"
+  FEED_URL = "http://unimedia.info/rss/news.xml"
 
   def setup
     FileUtils.mkdir_p PAGES_DIR
@@ -15,14 +15,10 @@ class UnimediaFetcher
   end
 
   def latest_stored_id
-    ParsedPage.where(source: 'unimedia').desc(:article_id).limit(1).first.article_id if ENV["ENV"] == "prodction"
-
-    if ENV["production"] != "production"
-      Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-          .map(&:to_i)
-          .sort
-          .last || 0
-    end
+    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
+        .map(&:to_i)
+        .sort
+        .last || 0
   end
 
   def link(id)

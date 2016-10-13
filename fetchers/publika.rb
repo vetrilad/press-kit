@@ -12,22 +12,18 @@ class PublikaFetcher
     return @most_recent_id if @most_recent_id
     doc = Nokogiri::XML(RestClient.get(FEED_URL))
     @most_recent_id = doc.css("link")[2]
-                         .text
-                         .scan(/_([\d]+)\.html/)
-                         .first
-                         .first
-                         .to_i
+                          .text
+                          .scan(/_([\d]+)\.html/)
+                          .first
+                          .first
+                          .to_i
   end
 
   def latest_stored_id
-    ParsedPage.where(source: 'publika').desc(:article_id).limit(1).first.article_id if ENV["ENV"]=="production"
-
-    if ENV["ENV"] != "production"
-      Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-                          .map(&:to_i)
-                          .sort
-                          .last || 0
-    end
+    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
+        .map(&:to_i)
+        .sort
+        .last || 0
   end
 
   def link(id)
