@@ -14,7 +14,7 @@ namespace :fetch do
   end
 
   task :protv do
-    ProTvFetcher.new.run
+    Fetchers::ProTV.new.run
   end
 end
 
