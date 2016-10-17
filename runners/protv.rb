@@ -1,8 +1,8 @@
 module Runners
-  class ProTV
-    attr_reader :fetcher, name
+  class ProTV < BaseRunner
+    attr_reader :fetcher, :name
 
-    def initialize(fetcher)
+    def initialize(fetcher: Fetchers::ProTV.new)
       @fetcher = fetcher
       @name = "ProTV"
     end

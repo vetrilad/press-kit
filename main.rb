@@ -26,3 +26,6 @@ require_relative "fetchers/protv"
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
 require_relative "parsers/publika"
+require_relative "parsers/protv"
+
+require_relative "lib/helpers"
