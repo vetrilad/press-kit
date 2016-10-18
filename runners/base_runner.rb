@@ -1,7 +1,14 @@
 module Runners
   class BaseRunner
     def progressbar
-      @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
+      @progressbar ||= ProgressBar.new(fetcher.most_recent_id - 126991, :bar, :counter, :rate, :eta)
+    end
+
+    def latest_stored_id
+      Dir["#{fetcher.page_dir}*"].map { |f| f.split('.').first.gsub(fetcher.page_dir, "") }
+          .map(&:to_i)
+          .sort
+          .last || 1
     end
 
     def run

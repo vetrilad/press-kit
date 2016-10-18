@@ -16,6 +16,14 @@ namespace :fetch do
   task :protv do
     Runners::ProTV.new.run
   end
+
+  task :reverse_publika do
+    Runners::Publika.new.reverse_run
+  end
+
+  task :reverse_protv do
+    Runners::ProTV.new.reverse_run
+  end
 end
 
 namespace :parse do

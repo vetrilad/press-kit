@@ -1,11 +1,16 @@
 require_relative "../main"
 
 class PublikaFetcher
-  PAGES_DIR = "data/pages/publika/"
+  attr_accessor :page_dir
   FEED_URL = "http://rss.publika.md/stiri.xml"
 
+  def initialize
+    @page_dir = "data/pages/publika/"
+    setup
+  end
+
   def setup
-    FileUtils.mkdir_p PAGES_DIR
+    FileUtils.mkdir_p page_dir
   end
 
   def most_recent_id
@@ -20,7 +25,7 @@ class PublikaFetcher
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
+    Dir["#{page_dir}*"].map { |f| f.split('.').first.gsub(page_dir, "") }
         .map(&:to_i)
         .sort
         .last || 0
@@ -35,7 +40,7 @@ class PublikaFetcher
   end
 
   def save(page, id)
-    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
+    Zlib::GzipWriter.open(page_dir + id.to_s + ".html.gz") do |gz|
       gz.write page
     end
   end

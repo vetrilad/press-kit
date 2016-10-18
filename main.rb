@@ -28,4 +28,8 @@ require_relative "parsers/unimedia"
 require_relative "parsers/publika"
 require_relative "parsers/protv"
 
+require_relative "runners/base_runner"
+require_relative "runners/protv"
+require_relative "runners/publika"
+
 require_relative "lib/helpers"

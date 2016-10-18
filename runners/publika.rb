@@ -1,10 +1,10 @@
 module Runners
-  class ProTV < BaseRunner
+  class Publika < BaseRunner
     attr_reader :fetcher, :name
 
-    def initialize(fetcher: Fetchers::ProTV.new)
+    def initialize(fetcher: PublikaFetcher.new)
       @fetcher = fetcher
-      @name = "ProTV"
+      @name = "Publika"
     end
 
     def reverse_run
@@ -16,15 +16,14 @@ module Runners
       # end
 
       array = []
-      (126991..fetcher.most_recent_id).step(10) do |id|
+      (1050931..fetcher.most_recent_id).step(10) do |id|
         array << id
       end
       
       array.reverse_each do |id|
-          fetcher.fetch_single(id)
-          progressbar.increment!
+        fetcher.fetch_single(id)
+        progressbar.increment!
       end
     end
-
   end
 end

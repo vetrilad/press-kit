@@ -12,5 +12,5 @@ production:
        - localhost:4321
       options:
         user: dorici
-        password: earth1wind2fire3
+        password: password
         auth_source: admin
