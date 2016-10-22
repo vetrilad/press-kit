@@ -12,7 +12,7 @@ module Runners
     end
 
     def run
-      puts "Fetching #{name} Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+      puts "Fetching #{name} Most recent: #{most_recent_id}. Last fetched: "
 
       if latest_stored_id == most_recent_id
         puts "Nothing to fetch for Timpul"

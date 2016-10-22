@@ -8,7 +8,7 @@ module Runners
     end
 
     def reverse_run
-      puts "Fetching #{name} Most recent: #{fetcher.most_recent_id}. Last fetched: #{latest_stored_id}."
+      puts "Fetching #{name} Most recent: #{fetcher.most_recent_id}. Last fetched: "
       #
       # if latest_stored_id == fetcher.most_recent_id
       #   puts "Nothing to fetch for Timpul"
@@ -16,7 +16,7 @@ module Runners
       # end
 
       array = []
-      (126991..fetcher.most_recent_id).step(10) do |id|
+      (126991..848541).step(10) do |id|
         array << id
       end
       

@@ -16,7 +16,9 @@ class SmartFetcher
     retry
   rescue SocketError => error
     puts "socket error: #{url}"
-
+  rescue RestClient::RequestTimeout => error
+    puts "REQUEST TIMEOUT HOHOHOO" 
+ 
     if retry_on_socket_error
       sleep 60
       retry

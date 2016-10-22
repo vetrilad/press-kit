@@ -16,7 +16,7 @@ module Runners
       # end
 
       array = []
-      (1050931..fetcher.most_recent_id).step(10) do |id|
+      (latest_stored_id..fetcher.most_recent_id).step(10) do |id|
         array << id
       end
       

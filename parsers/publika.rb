@@ -10,6 +10,10 @@ class PublikaParser
                             .last || 0
   end
 
+  def available_ids
+    @latest_stored_id = Dir["#{@page_dir}*"].map{ |f| f.split('.').first.gsub(@page_dir, "") }.map(&:to_i).sort
+  end
+
   def latest_parsed_id
     ParsedPage.where(source: 'publika').desc(:article_id).limit(1).first.article_id
   rescue
@@ -59,7 +63,7 @@ class PublikaParser
 
     # content = doc.xpath("//*[preceding-sibling::div[@style='clear: both; height: 10px;'] and following-sibling::div[@class='box-share clearfix']]")
     #               .css("p").text
-
+   
     content = doc.xpath("//div[@itemprop='articleBody']").text
 
     {
@@ -89,8 +93,10 @@ class PublikaParser
 
   def run
     @page_dir = "data/pages/publika/"
-
-    (latest_parsed_id..latest_stored_id).to_a.each do |id|
+    p latest_stored_id	
+    p latest_parsed_id
+    p available_ids.index(latest_parsed_id)
+    available_ids[available_ids.index(latest_parsed_id)..latest_stored_id].to_a.each do |id|
       begin
         puts "\nPublika: #{progress(id)}"
 
